@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "MakeYoutubeBoring",
+    "version": "1.0",
+    "description": "A chrome extension that makes youtube boring",
+    "content_scripts": [
+        {
+            "matches": ["https://www.youtube.com/*"],
+            "js": ["content.js"]
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["BoringYoutubeThumbnail.png"],
+            "matches": ["https://www.youtube.com/*"]
+        }
+    ]
+}
