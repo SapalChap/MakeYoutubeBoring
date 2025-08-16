@@ -14,7 +14,6 @@ function makeImagesBoring(){
      }
 }
 
-
 function makeTitlesBoring() {
     const videoTitles = document.querySelectorAll("h3[title], a#video-title");
 
@@ -37,15 +36,39 @@ function makeTitlesBoring() {
                 titleElement.textContent = lowerTitle;
             }
             
-            console.log(`Changed: "${originalTitle}" -> "${lowerTitle}"`);
         }
     }
 }
 
 
+function removeShorts() {
+    // Look for common Shorts selectors
+    const shortsLinks = document.querySelectorAll(`
+        a[href="/shorts"],
+        a[href*="/shorts"],
+        [title*="Shorts" i],
+        ytd-guide-entry-renderer
+    `);
+    
+    shortsLinks.forEach(element => {
+        if (element.textContent.toLowerCase().includes('shorts') || 
+            element.getAttribute('title')?.toLowerCase().includes('shorts')) {
+            element.style.display = 'none';
+        }
+    });
+}
+
+
+
+
+
+
 makeImagesBoring();
 makeTitlesBoring();
+removeShorts();
+
 
 setInterval(makeImagesBoring, 1000);
 setInterval(makeTitlesBoring, 1000);
+setInterval(removeShorts, 2000); 
 
