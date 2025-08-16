@@ -15,27 +15,32 @@ function makeImagesBoring(){
 }
 
 
+function makeTitlesBoring() {
+    const videoTitles = document.querySelectorAll("h3[title], a#video-title");
 
-function makeTitlesBoring(){
+    for (let titleElement of videoTitles) {
+        let originalTitle = titleElement.getAttribute("title") || titleElement.textContent.trim();
 
-    const videoTitles = document.querySelectorAll("h3[title], a#video-title")
-    const boringTitles = [];
-
-    for (let titleElement of videoTitles){
-        let originalTitle = titleElement.getAttribute("title") || titleElement.textContent;
-
-        if (originalTitle) { //make lower case
+        if (originalTitle && originalTitle.length > 0) {
             let lowerTitle = originalTitle.toLowerCase();
-            titleElement.textContent = lowerTitle;
-            titleElement.setAttribute("title", lowerTitle);
-
-            if (titleElement.hasAttribute("title")) {
-                console.log("Successfully changed to lower case")
-                titleElement.setAttribute("title", lowerTitle);
-            }            
             
+            // Update title attribute
+            titleElement.setAttribute("title", lowerTitle);
+            
+            // Update visible text based on element type
+            if (titleElement.tagName === 'H3') {
+                const span = titleElement.querySelector("span");
+                if (span) {
+                    span.textContent = lowerTitle;
+                }
+            } else {
+                titleElement.textContent = lowerTitle;
+            }
+            
+            console.log(`Changed: "${originalTitle}" -> "${lowerTitle}"`);
         }
-    } }
+    }
+}
 
 
 makeImagesBoring();
