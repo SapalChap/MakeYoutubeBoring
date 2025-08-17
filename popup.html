@@ -273,45 +273,6 @@
         <div class="status" id="status"></div>
     </div>
 
-    <script>
-        const radioButtons = document.querySelectorAll('input[name="boring-level"]');
-        const statusDiv = document.getElementById('status');
-        const feedbackText = document.getElementById('feedbackText');
-        const submitFeedbackBtn = document.getElementById('submitFeedback');
-
-        // Apply settings immediately when radio button is selected
-        radioButtons.forEach(radio => {
-            radio.addEventListener('change', function() {
-                const level = this.value;
-                updateStatus(`Boring level ${level} applied! YouTube is now more boring.`);
-                
-                // Here you would send message to content script immediately
-                // chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                //     chrome.tabs.sendMessage(tabs[0].id, {action: "applyBoring", level: level});
-                // });
-            });
-        });
-
-        // Submit feedback
-        submitFeedbackBtn.addEventListener('click', function() {
-            const feedback = feedbackText.value.trim();
-            if (feedback) {
-                updateStatus('Thank you for your feedback!');
-                feedbackText.value = '';
-                
-                // Here you would send feedback to your server
-                // console.log('Feedback submitted:', feedback);
-            } else {
-                updateStatus('Please enter some feedback first');
-            }
-        });
-
-        function updateStatus(message) {
-            statusDiv.textContent = message;
-            setTimeout(() => {
-                statusDiv.textContent = '';
-            }, 3000);
-        }
-    </script>
+    <script src="popup.js"></script>
 </body>
 </html>

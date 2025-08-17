@@ -2,6 +2,41 @@
 
 const blackImage = chrome.runtime.getURL("BoringYoutubeThumbnail.png");
 
+// Add message listener at the top
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    if (request.action === "applyBoring") {
+        applyBoringLevel(request.level);
+    }
+});
+
+// New function to apply different boring levels
+function applyBoringLevel(level) {
+    console.log(`Applying boring level: ${level}`);
+    
+    switch(level) {
+        case 1:
+            // Level 1: Remove thumbnails + shorts
+            makeImagesBoring();
+            removeShorts();
+            break;
+        case 2:
+            // Level 2: Level 1 + black & white videos + no comments
+            makeImagesBoring();
+            removeShorts();
+            makeVideosBlackAndWhite();
+            removeComments();
+            break;
+        case 3:
+            // Level 3: Same as Level 2 for now
+            makeImagesBoring();
+            removeShorts();
+            makeVideosBlackAndWhite();
+            removeComments();
+            break;
+        default:
+            console.log('Invalid boring level');
+    }
+}
 
 function makeImagesBoring(){
     const imgs = document.getElementsByTagName("img");
@@ -172,18 +207,21 @@ function removeComments() {
     });
 }
 
-makeImagesBoring();
-makeTitlesBoring();
-removeShorts();
-removeSidebar();
-makeVideosBlackAndWhite();
-removeComments();
+// Apply default boring level on page load
+chrome.storage.sync.get(['boringLevel'], function(result) {
+    if (result.boringLevel) {
+        applyBoringLevel(result.boringLevel);
+    } else {
+        // Default to level 1 if no preference is set
+        applyBoringLevel(1);
+    }
+});
 
-
-setInterval(makeImagesBoring, 1000);
-setInterval(makeTitlesBoring, 1000);
-setInterval(removeShorts, 2000);
-setInterval(removeSidebar, 1000); 
-setInterval(makeVideosBlackAndWhite, 3000);
-setInterval(removeComments,1000);
+// Keep applying effects periodically
+setInterval(() => {
+    chrome.storage.sync.get(['boringLevel'], function(result) {
+        const level = result.boringLevel || 1;
+        applyBoringLevel(level);
+    });
+}, 2000);
 
