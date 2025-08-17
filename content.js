@@ -32,6 +32,7 @@ function applyBoringLevel(level) {
             removeShorts();
             makeVideosBlackAndWhite();
             removeComments();
+            clearYouTubeHome();
             break;
         default:
             console.log('Invalid boring level');
@@ -206,6 +207,19 @@ function removeComments() {
         button.style.display = 'none';
     });
 }
+
+
+function clearYouTubeHome() {
+    if (window.location.hostname === 'www.youtube.com' && 
+        (window.location.pathname === '/' || window.location.pathname === '')) {
+        
+        const contentsDiv = document.getElementById('contents');
+        if (contentsDiv) {
+            contentsDiv.innerHTML = '';
+            // Prevent new content from loading
+            contentsDiv.style.display = 'none';
+        }
+    }}
 
 // Apply default boring level on page load
 chrome.storage.sync.get(['boringLevel'], function(result) {
