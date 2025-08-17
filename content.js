@@ -136,14 +136,54 @@ function removeSidebar() {
 }
 
 
+function makeVideosBlackAndWhite() {
+    const videos = document.querySelectorAll('video');
+    
+    videos.forEach(video => {
+        // Apply black and white immediately if not already applied
+        if (!video.style.filter.includes('grayscale')) {
+            video.style.filter = 'grayscale(100%)';
+        }
+    });
+}
+
+
+function removeComments() {
+    // Find all comment threads
+    const commentThreads = document.querySelectorAll('ytd-comment-thread-renderer, ytm-comment-thread-renderer');
+    
+    // Hide all comments after the first 3
+    commentThreads.forEach((thread, index) => {
+        if (index >= 3) {
+            thread.style.display = 'none';
+        }
+    });
+    
+    // Also hide "Show more" or "Load more" buttons to prevent loading more comments
+    const showMoreButtons = document.querySelectorAll(`
+        ytd-continuation-item-renderer,
+        .load-more-button,
+        #continuations,
+        ytd-comments-header-renderer #expand-button
+    `);
+    
+    showMoreButtons.forEach(button => {
+        button.style.display = 'none';
+    });
+}
+
 makeImagesBoring();
 makeTitlesBoring();
 removeShorts();
 removeSidebar();
+makeVideosBlackAndWhite();
+removeComments();
 
 
 setInterval(makeImagesBoring, 1000);
 setInterval(makeTitlesBoring, 1000);
 setInterval(removeShorts, 2000);
 setInterval(removeSidebar, 1000); 
+setInterval(makeVideosBlackAndWhite, 3000);
+setInterval(removeComments,1000);
 
