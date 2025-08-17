@@ -58,6 +58,25 @@ function removeShorts() {
     });
 }
 
+function removeSidebar() {
+    // Common YouTube sidebar selectors
+    const sidebarSelectors = [
+        '#secondary', // Main sidebar container
+        '#related', // Related videos section
+        'ytd-watch-next-secondary-results-renderer', // Next video recommendations
+        '#secondary-inner', // Inner sidebar content
+        'ytd-guide-renderer', // Left navigation guide
+        '#guide-content' // Guide content
+    ];
+    
+    sidebarSelectors.forEach(selector => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.style.display = 'none';
+        }
+    });
+}
+
 
 
 
@@ -66,9 +85,11 @@ function removeShorts() {
 makeImagesBoring();
 makeTitlesBoring();
 removeShorts();
+removeSidebar();
 
 
 setInterval(makeImagesBoring, 1000);
 setInterval(makeTitlesBoring, 1000);
-setInterval(removeShorts, 2000); 
+setInterval(removeShorts, 2000);
+setInterval(removeSidebar, 1000); 
 
