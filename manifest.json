@@ -3,12 +3,16 @@
     "name": "MakeYoutubeBoring",
     "version": "1.0",
     "description": "A chrome extension that makes youtube boring",
+    "icons": { 
+        "128" : "BoringYoutubeLogo.png"
+    },
     "permissions": [
         "activeTab",
         "storage"
     ],
     "action": {
-        "default_popup": "popup.html"
+        "default_popup": "popup.html",
+        "default_icon": "BoringYoutubeLogo.png"
     },
     "content_scripts": [
         {
