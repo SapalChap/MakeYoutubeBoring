@@ -2,6 +2,7 @@ const radioButtons = document.querySelectorAll('input[name="boring-level"]');
 const statusDiv = document.getElementById('status');
 const feedbackText = document.getElementById('feedbackText');
 const submitFeedbackBtn = document.getElementById('submitFeedback');
+const feedbackSection = document.querySelector('.feedback-section');
 
 // Apply settings when radio button is selected
 radioButtons.forEach(radio => {
@@ -44,6 +45,11 @@ submitFeedbackBtn.addEventListener('click', function() {
         updateStatus('Please enter some feedback first');
     }
 });
+
+if (feedbackText.value.trim() === '') {
+    feedbackText.value = '';
+}
+
 
 function updateStatus(message) {
     statusDiv.textContent = message;
