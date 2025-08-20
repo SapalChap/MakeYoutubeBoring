@@ -17,6 +17,11 @@ radioButtons.forEach(radio => {
                     action: "applyBoring",
                     level: level
                 });
+                
+                // Refresh the page after applying the new boring level
+                setTimeout(() => {
+                    chrome.tabs.reload(tabs[0].id);
+                }, 500); // Small delay to ensure the message is processed
             }
         });
         
@@ -46,6 +51,7 @@ submitFeedbackBtn.addEventListener('click', function() {
     }
 });
 
+//Fix for the chrome api auto whitespace issue
 if (feedbackText.value.trim() === '') {
     feedbackText.value = '';
 }
