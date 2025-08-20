@@ -1,0 +1,21 @@
+# Secrets and sensitive files
+secrets.js
+secrets.json
+.env
+
+# API keys and credentials
+*.key
+*.pem
+*.p12
+*.pfx
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db

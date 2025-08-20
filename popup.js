@@ -1,3 +1,7 @@
+// Import secrets
+const SUPABASE_URL = window.secrets.SUPABASE_URL;
+const SUPABASE_KEY = window.secrets.SUPABASE_KEY;
+
 const radioButtons = document.querySelectorAll('input[name="boring-level"]');
 const statusDiv = document.getElementById('status');
 const feedbackText = document.getElementById('feedbackText');
