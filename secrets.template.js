@@ -1,10 +1,11 @@
-// Template for secrets.js - Copy this file to secrets.js and add your actual API keys
-// This template file CAN be committed to version control as it contains no sensitive data
+// API Keys and sensitive configuration
 
 const secrets = {
-    SUPABASE_URL: 'YOUR_SUPABASE_URL_HERE',
-    SUPABASE_KEY: 'YOUR_SUPABASE_ANON_KEY_HERE',
+    SUPABASE_URL: 'yoursupabaseURL',
+    SUPABASE_KEY: 'yourAPIkey',
+    TABLE_NAME: 'yoursupabasetablename'
 };
+
 
 // Export for use in other files
 if (typeof module !== 'undefined' && module.exports) {
@@ -12,4 +13,5 @@ if (typeof module !== 'undefined' && module.exports) {
 } else if (typeof window !== 'undefined') {
     // For browser environment
     window.secrets = secrets;
+    console.log('Secrets added to window object');
 }
