@@ -1,7 +1,8 @@
 // Import secrets
 const SUPABASE_URL = window.secrets.SUPABASE_URL;
 const SUPABASE_KEY = window.secrets.SUPABASE_KEY;
-const SUPABASE_TABLE = window.secrets.SUPABASE_TABLE;
+const SUPABASE_TABLE_DEV = window.secrets.SUPABASE_TABLE_DEV;
+const SUPABASE_TABLE_PROD = window.secrets.SUPABASE_TABLE_PROD;
 
 const radioButtons = document.querySelectorAll('input[name="boring-level"]');
 const statusDiv = document.getElementById('status');
@@ -125,8 +126,15 @@ submitFeedbackBtn.addEventListener('click', async function() {
                 created_at: getCurrentTimestamp()
             };
             
+            console.log('Data being sent to Supabase:', data);
+
+            // Determine which table to use based on user ID
+            const targetTable = userInfo.user_id === '110806083993815849787' ? SUPABASE_TABLE_DEV : SUPABASE_TABLE_PROD;
+            console.log('Target table:', targetTable);
+            
+            
             // Submit to Supabase
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`, {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/${targetTable}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -137,7 +145,12 @@ submitFeedbackBtn.addEventListener('click', async function() {
             });
 
             if (response.ok) {
-                updateStatus('Thank you for your feedback!');
+                // Set different success messages based on target table
+                if (targetTable === SUPABASE_TABLE_DEV) {
+                    updateStatus('Data has to sent to Dev, Boss.');
+                } else {
+                    updateStatus('Thank you for your feedback!');
+                }
                 feedbackText.value = '';
             } else {
                 updateStatus('Failed to submit feedback');

@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "MakeYoutubeBoring",
     "version": "1.0",
-    "description": "A chrome extension that makes youtube boring",
+    "description": "MakeYoutubeBoring that makes youtube boring so you can focus and not waste your time on youtube anymore!",
     "icons": { 
         "128" : "BoringYoutubeLogo.png"
     },
