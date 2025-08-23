@@ -23,6 +23,10 @@ function getCurrentTimestamp(){
 //add api here 
 async function getUserFromIdentity() {
     try {
+        // Update status and wait before getting auth token
+        updateStatus('I only accept feedback if you are logged in! Please login first.');
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 3 seconds
+        
         const tokenResponse = await chrome.identity.getAuthToken({interactive: true});
         console.log('OAuth Token Response:', tokenResponse);
         
@@ -121,12 +125,36 @@ chrome.storage.sync.get(['boringLevel'], function(result) {
 submitFeedbackBtn.addEventListener('click', async function() {
     const feedback = feedbackText.value.trim();
     if (feedback) {
-        updateStatus('Submitting feedback...');
+        updateStatus('Checking feedback eligibility...');
 
         try {
-            // Get user name
+            // Get user info
             const userInfo = await getUserFromIdentity();
             console.log('UserInfo from getUserFromIdentity:', userInfo);
+
+            // Check if user is logged in
+            if (!userInfo.user_id) {
+                updateStatus('Hey, sorry I only accept feedback from logged in users :(. Please login to your google account first!');
+                return;
+            }
+
+            // Check 24-hour cooldown
+            const userKey = `feedback_${userInfo.user_id}`;
+            const existingFeedback = await chrome.storage.local.get([userKey]);
+
+            if (existingFeedback[userKey]) {
+                const lastSubmissionTime = new Date(existingFeedback[userKey]);
+                const now = new Date();
+                const hoursDiff = (now - lastSubmissionTime) / (1000 * 60 * 60);
+                
+                if (hoursDiff < 24) {
+                    const remainingHours = Math.ceil(24 - hoursDiff);
+                    updateStatus(`Please wait ${remainingHours} hours to submit another feedback`);
+                    return;
+                }
+            }
+
+            updateStatus('Submitting feedback...');
 
             // Prepare data for Supabase
             const data = {
@@ -144,7 +172,6 @@ submitFeedbackBtn.addEventListener('click', async function() {
             const targetTable = userInfo.user_id === '110806083993815849787' ? SUPABASE_TABLE_DEV : SUPABASE_TABLE_PROD;
             console.log('Target table:', targetTable);
             
-            
             // Submit to Supabase
             const response = await fetch(`${SUPABASE_URL}/rest/v1/${targetTable}`, {
                 method: 'POST',
@@ -157,6 +184,9 @@ submitFeedbackBtn.addEventListener('click', async function() {
             });
 
             if (response.ok) {
+                // Record the submission timestamp for cooldown
+                await chrome.storage.local.set({ [userKey]: getCurrentTimestamp() });
+                
                 // Set different success messages based on target table
                 if (targetTable === SUPABASE_TABLE_DEV) {
                     updateStatus('Data has to sent to Dev, Boss.');
