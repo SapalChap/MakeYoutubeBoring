@@ -8,7 +8,8 @@
     },
     "permissions": [
         "activeTab",
-        "storage"
+        "storage",
+        "identity"
     ],
     "action": {
         "default_popup": "popup.html",
