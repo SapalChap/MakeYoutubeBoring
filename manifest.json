@@ -11,6 +11,13 @@
         "storage",
         "identity"
     ],
+    "oauth2": {
+        "client_id": "1024912421185-rhao18vc4b4f4203nujhm8cdpct5juge.apps.googleusercontent.com",
+        "scopes": [
+            "https://www.googleapis.com/auth/userinfo.profile",
+            "https://www.googleapis.com/auth/userinfo.email"
+        ]
+    },
     "action": {
         "default_popup": "popup.html",
         "default_icon": "BoringYoutubeLogo.png"
