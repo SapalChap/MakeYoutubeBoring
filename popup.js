@@ -73,17 +73,23 @@ async function getUserFromIdentity() {
 radioButtons.forEach(radio => {
     radio.addEventListener('change', function() {
         const level = parseInt(this.value);
-        updateStatus(`Boring level ${level} applied! YouTube is now more boring.`);
+        
+        if (level === 0) {
+            updateStatus('YouTube will stay distracting as usual!');
+        } else {
+            updateStatus(`Boring level ${level} applied! YouTube is now more boring.`);
+        }
         
         // Send message to content script
         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
             if (tabs[0] && tabs[0].url && tabs[0].url.includes('youtube.com')) {
+                // Send message for all levels (including level 0)
                 chrome.tabs.sendMessage(tabs[0].id, {
                     action: "applyBoring",
                     level: level
                 });
                 
-                // Refresh the page after applying the new boring level
+                // Refresh the page after applying any level change
                 setTimeout(() => {
                     chrome.tabs.reload(tabs[0].id);
                 }, 500); // Small delay to ensure the message is processed
@@ -97,10 +103,16 @@ radioButtons.forEach(radio => {
 
 // Load saved preference when popup opens
 chrome.storage.sync.get(['boringLevel'], function(result) {
-    if (result.boringLevel) {
+    if (result.boringLevel !== undefined) {
         const radioButton = document.querySelector(`input[value="${result.boringLevel}"]`);
         if (radioButton) {
             radioButton.checked = true;
+        }
+    } else {
+        // Default to "Keep YouTube Distracting" (level 0)
+        const defaultRadioButton = document.querySelector('input[value="0"]');
+        if (defaultRadioButton) {
+            defaultRadioButton.checked = true;
         }
     }
 });

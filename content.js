@@ -14,6 +14,10 @@ function applyBoringLevel(level) {
     console.log(`Applying boring level: ${level}`);
     
     switch(level) {
+
+        case 0:
+            //no nothing
+            break;
         case 1:
             // Level 1: Remove thumbnails + shorts
             makeImagesBoring();
@@ -223,18 +227,18 @@ function clearYouTubeHome() {
 
 // Apply default boring level on page load
 chrome.storage.sync.get(['boringLevel'], function(result) {
-    if (result.boringLevel) {
+    if (result.boringLevel !== undefined) {
         applyBoringLevel(result.boringLevel);
     } else {
-        // Default to level 1 if no preference is set
-        applyBoringLevel(1);
+        // Default to level 0 (YouTube as usual) if no preference is set
+        applyBoringLevel(0);
     }
 });
 
 // Keep applying effects periodically
 setInterval(() => {
     chrome.storage.sync.get(['boringLevel'], function(result) {
-        const level = result.boringLevel || 1;
+        const level = result.boringLevel !== undefined ? result.boringLevel : 0;
         applyBoringLevel(level);
     });
 }, 2000);
