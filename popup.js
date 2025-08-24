@@ -23,9 +23,6 @@ function getCurrentTimestamp(){
 //add api here 
 async function getUserFromIdentity() {
     try {
-        // Update status and wait before getting auth token
-        updateStatus('I only accept feedback if you are logged in! Please login first.');
-        await new Promise(resolve => setTimeout(resolve, 3000)); // Wait 3 seconds
         
         const tokenResponse = await chrome.identity.getAuthToken({interactive: true});
         console.log('OAuth Token Response:', tokenResponse);
@@ -71,7 +68,6 @@ async function getUserFromIdentity() {
         }
     }
 }
-
 
 // Apply settings when radio button is selected
 radioButtons.forEach(radio => {
@@ -196,9 +192,6 @@ submitFeedbackBtn.addEventListener('click', async function() {
                 feedbackText.value = '';
             } else {
                 updateStatus('Failed to submit feedback');
-                console.log('API Response:', response);
-                console.log('Response status:', response.status);
-                console.log('Response statusText:', response.statusText);
             }
         } catch (error) {
             updateStatus('Failed to submit feedback');
