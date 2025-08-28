@@ -15,12 +15,10 @@ function getExtensionVersion(){
     return chrome.runtime.getManifest().version;
 }
 
-
 function getCurrentTimestamp(){
     return new Date().toISOString();
 }
 
-//add api here 
 async function getUserFromIdentity() {
     try {
         
@@ -39,20 +37,12 @@ async function getUserFromIdentity() {
             }
         });
 
-        console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
-
-        const userInfo = await response.json();
-        console.log('Full userInfo response:', userInfo);
-        
+        const userInfo = await response.json(); 
         // Extract data from the new API response format
         const name = userInfo.names && userInfo.names[0] ? userInfo.names[0].displayName : null;
         const email = userInfo.emailAddresses && userInfo.emailAddresses[0] ? userInfo.emailAddresses[0].value : null;
         const userId = userInfo.resourceName ? userInfo.resourceName.replace('people/', '') : null;
-        
-        console.log('User ID:', userId);
-        console.log('User Email:', email);
-        console.log('User Name:', name);
+    
 
         return {
             user_id: userId,
