@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "MakeYoutubeBoring",
-    "version": "1.0",
+    "version": "1.1",
     "description": "MakeYoutubeBoring makes Youtube boring so you can focus and not waste your time on Youtube anymore!",
     "icons": { 
         "128" : "BoringYoutubeLogo.png"
