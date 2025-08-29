@@ -44,39 +44,22 @@ function applyBoringLevel(level) {
 }
 
 function makeImagesBoring(){
-    const imgs = document.getElementsByTagName("img");
-    
-    for (image of imgs) {
-        
-        if (image.src !== blackImage) {
-            image.src = blackImage;
-        }
-     }
-}
-
-function makeTitlesBoring() {
-    const videoTitles = document.querySelectorAll("h3[title], a#video-title");
-
-    for (let titleElement of videoTitles) {
-        let originalTitle = titleElement.getAttribute("title") || titleElement.textContent.trim();
-
-        if (originalTitle && originalTitle.length > 0) {
-            let lowerTitle = originalTitle.toLowerCase();
-            
-            // Update title attribute
-            titleElement.setAttribute("title", lowerTitle);
-            
-            // Update visible text based on element type
-            if (titleElement.tagName === 'H3') {
-                const span = titleElement.querySelector("span");
-                if (span) {
-                    span.textContent = lowerTitle;
-                }
-            } else {
-                titleElement.textContent = lowerTitle;
+    // Add CSS to prevent loading
+    if (!document.getElementById('boring-css')) {
+        const style = document.createElement('style');
+        style.id = 'boring-css';
+        style.textContent = `
+            img:not([src*="BoringYoutubeThumbnail.png"]) {
+                content: url("${blackImage}") !important;
             }
-            
-        }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // Also replace any existing images
+    const imgs = document.querySelectorAll('img:not([src*="BoringYoutubeThumbnail.png"])');
+    for (let i = 0; i < imgs.length; i++) {
+        imgs[i].src = blackImage;
     }
 }
 
@@ -192,11 +175,9 @@ function removeComments() {
     // Find all comment threads
     const commentThreads = document.querySelectorAll('ytd-comment-thread-renderer, ytm-comment-thread-renderer');
     
-    // Hide all comments after the first 3
-    commentThreads.forEach((thread, index) => {
-        if (index >= 3) {
-            thread.style.display = 'none';
-        }
+    // Hide all comments
+    commentThreads.forEach(thread => {
+        thread.style.display = 'none';
     });
     
     // Also hide "Show more" or "Load more" buttons to prevent loading more comments
