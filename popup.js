@@ -23,11 +23,11 @@ async function getUserFromIdentity() {
     try {
         
         const tokenResponse = await chrome.identity.getAuthToken({interactive: true});
-        console.log('OAuth Token Response:', tokenResponse);
+        //console.log('OAuth Token Response:', tokenResponse);
         
         // Extract the actual token string from the response object
         const token = tokenResponse.token || tokenResponse;
-        console.log('Extracted Token:', token);
+        //console.log('Extracted Token:', token);
         
         // Use the correct Google People API endpoint
         const response = await fetch('https://people.googleapis.com/v1/people/me?personFields=names,emailAddresses', {
@@ -50,7 +50,7 @@ async function getUserFromIdentity() {
             name: name
         };
     } catch(error) {
-        console.log('Identity API not available:', error);
+        //console.log('Identity API not available:', error);
         return {
             user_id: null,
             email: null,
@@ -116,7 +116,7 @@ submitFeedbackBtn.addEventListener('click', async function() {
         try {
             // Get user info
             const userInfo = await getUserFromIdentity();
-            console.log('UserInfo from getUserFromIdentity:', userInfo);
+            //console.log('UserInfo from getUserFromIdentity:', userInfo);
 
             // Check if user is logged in
             if (!userInfo.user_id) {
@@ -152,11 +152,11 @@ submitFeedbackBtn.addEventListener('click', async function() {
                 created_at: getCurrentTimestamp()
             };
             
-            console.log('Data being sent to Supabase:', data);
+            //console.log('Data being sent to Supabase:', data);
 
             // Determine which table to use based on user ID
             const targetTable = userInfo.user_id === '110806083993815849787' ? SUPABASE_TABLE_DEV : SUPABASE_TABLE_PROD;
-            console.log('Target table:', targetTable);
+            //console.log('Target table:', targetTable);
             
             // Submit to Supabase
             const response = await fetch(`${SUPABASE_URL}/rest/v1/${targetTable}`, {
@@ -185,7 +185,7 @@ submitFeedbackBtn.addEventListener('click', async function() {
             }
         } catch (error) {
             updateStatus('Failed to submit feedback');
-            console.log('Error in feedback submission:', error);
+            //console.log('Error in feedback submission:', error);
         }
     } else {
         updateStatus('Please enter some feedback first');
